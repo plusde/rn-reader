@@ -7,6 +7,7 @@ import {
   FlatList,
   RefreshControl,
   Pressable,
+  Image,
 } from "react-native";
 import { IconButton } from 'react-native-paper';
 import { Button } from "../components/button";
@@ -101,17 +102,21 @@ const Board = ({ route, navigation }) => {
             keyExtractor={item => item.no}
             renderItem={({ item, index }) =>
               <View>
-                <View style={styles.list.item}>
+                <View style={[styles.list.item, item?.filename ? {marginRight: 10} : {marginRight: 12}]}>
                   <Pressable
+                    style={{flexDirection: 'row', flex: 1, flexGrow: 1}}
                     android_ripple={{
                       color: "#ffffff40",
                       borderless: true,
                     }}
                     onPress={() => navigation.navigate('Thread')}
                   >
-                    {item?.sub ? <Text style={styles.list.title}>{replaceText(item?.sub)}</Text> : null}
-                    <Text style={styles.list.detail}>{item?.name} {item?.now}</Text>
-                    {item?.com ? <Text style={styles.list.meta}>{replaceText(item?.com)}</Text> : null}
+                    { item?.filename ? <Image style={styles.list.icon} source={{ uri: 'https://i.4cdn.org/' + board.board + '/' + item.tim + 's.jpg' }}/> : null }
+                    <View style={{flex: 1, flexGrow: 1}}>
+                      {item?.sub ? <Text style={styles.list.title}>{replaceText(item?.sub)}</Text> : null}
+                      <Text style={styles.list.detail}>{item?.name} {item?.now}</Text>
+                      {item?.com ? <Text style={styles.list.meta}>{replaceText(item?.com)}</Text> : null}
+                    </View>
                   </Pressable>
                 </View>
                 { index != shownPages.length - 1 ? null :
@@ -148,6 +153,7 @@ const Board = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: theme[global.theme].backgroundColor,
+    width: '100%',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -162,16 +168,24 @@ const styles = StyleSheet.create({
   },
   list: {
     flex: 1,
+    flexGrow: 1,
+    width: '100%',
     item: {
+      flexGrow: 1,
       padding: 6,
       paddingLeft: 12,
-      paddingRight: 12,
       margin: 10,
       marginTop: 10,
       marginBottom: 5,
       backgroundColor: theme[global.theme].inactiveAccentColor,
       borderRadius: 6,
       elevation: 0,
+    },
+    icon: {
+      marginRight: 10,
+      borderRadius: 6,
+      height: 50,
+      width: 50,
     },
     title: {
       fontWeight: 'bold',

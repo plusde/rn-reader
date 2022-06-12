@@ -52,6 +52,9 @@ const Sidebar = ({ props, navigation }) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.header.container}>
+          <Text style={styles.header.title}>
+            Boards
+          </Text>
           <IconButton
             icon={'bookmark'}
             color={theme[global.theme].emphasisedTextColor}
@@ -108,6 +111,13 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
+    title: {
+      paddingLeft: 20,
+      flex: 1,
+      fontSize: 20,
+      fontWeight: '600',
+      color: theme[global.theme].emphasisedTextColor,
+    },
     container: {
       height: 56,
       paddingRight: 7.5,
