@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "rn-reader",
+    "slug": "rn-reader",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "rn-reader"
+}
