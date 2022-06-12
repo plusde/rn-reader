@@ -74,16 +74,16 @@ const Board = ({ route, navigation }) => {
     return text.substr(0, 250).trim().length < text.length ?
       text.substr(0, 250).trim() + "..." :
       text
-  }
+  };
 
   const nextPage = () => {
     setShownPages([...shownPages, ...pages[shown].threads]);
     setShown(shown + 1);
-  }
+  };
   
   const [pages, setPages] = useState([]);
   const [shown, setShown] = useState(0);
-  const [shownPages, setShownPages] = useState(pages[shown]?.threads)
+  const [shownPages, setShownPages] = useState(pages[shown]?.threads);
   const [refreshing, setRefreshing] = useState(false);
 
   return (
@@ -102,14 +102,14 @@ const Board = ({ route, navigation }) => {
             keyExtractor={item => item.no}
             renderItem={({ item, index }) =>
               <View>
-                <View style={[styles.list.item, item?.filename ? {marginRight: 10} : {marginRight: 12}]}>
+                <View style={[styles.list.item, item?.filename ? {paddingLeft: 8} : {paddingLeft: 12}]}>
                   <Pressable
                     style={{flexDirection: 'row', flex: 1, flexGrow: 1}}
                     android_ripple={{
                       color: "#ffffff40",
                       borderless: true,
                     }}
-                    onPress={() => navigation.navigate('Thread')}
+                    onPress={() => navigation.navigate('Thread', {board: board, thread: item})}
                   >
                     { item?.filename ? <Image style={styles.list.icon} source={{ uri: 'https://i.4cdn.org/' + board.board + '/' + item.tim + 's.jpg' }}/> : null }
                     <View style={{flex: 1, flexGrow: 1}}>
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     item: {
       flexGrow: 1,
       padding: 6,
-      paddingLeft: 12,
+      paddingRight: 12,
       margin: 10,
       marginTop: 10,
       marginBottom: 5,
@@ -183,9 +183,11 @@ const styles = StyleSheet.create({
     },
     icon: {
       marginRight: 10,
+      marginTop: 2,
+      marginBottom: 2,
       borderRadius: 6,
-      height: 50,
-      width: 50,
+      height: 40,
+      width: 40,
     },
     title: {
       fontWeight: 'bold',

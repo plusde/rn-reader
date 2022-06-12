@@ -8,6 +8,7 @@ const theme = {
         textColor: "#3c3c3ca8",
         secondaryTextColor: "#282828a8",
         headerTextColor: "#000",
+        greenTextColor: "#3a662e",
     },
     'dark': {
         headerColor: "#2c3e50",
@@ -18,6 +19,7 @@ const theme = {
         textColor: "#f8f8f8",
         secondaryTextColor: "#f5f5f5a8",
         emphasisedTextColor: "#fff",
+        greenTextColor: "#3a662e",
     },
 };
 
