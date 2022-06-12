@@ -8,12 +8,13 @@ import {
   RefreshControl,
   Pressable,
 } from "react-native";
-import RenderHtml from 'react-native-render-html';
 import { IconButton } from 'react-native-paper';
 import { Button } from "../components/button";
 import axios from "axios";
 
 import theme from '../assets/style'
+
+global.theme = 'dark';
 
 const Board = ({ route, navigation }) => {
   const board = route.params?.board;

@@ -12,7 +12,6 @@ import Saved from './views/saved';
 import Sidebar from './views/sidebar';
 
 import theme from './assets/style';
-global.theme = 'dark';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
