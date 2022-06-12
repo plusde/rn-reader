@@ -53,7 +53,7 @@ const App = () => {
         <Stack.Screen name="BoardNavigator" component={navigators.BoardNavigator} options={{headerShown: false}} />
         <Stack.Screen name="Thread" component={Thread} />
         <Stack.Screen name="Settings" component={Settings} />
-        <Stack.Screen name="Saved" component={Saved} />
+        <Stack.Screen name="Bookmarked" component={Saved} />
       </Stack.Navigator>
     </NavigationContainer>
   );

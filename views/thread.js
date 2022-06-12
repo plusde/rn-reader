@@ -12,6 +12,7 @@ import {
 import { IconButton } from 'react-native-paper';
 import axios from "axios";
 
+import { replaceText } from '../assets/helper'
 import theme from '../assets/style'
 
 const Thread = ({ route, navigation }) => {
@@ -25,6 +26,16 @@ const Thread = ({ route, navigation }) => {
             icon={"arrow-left"}
             color={theme[global.theme].emphasisedTextColor}
             onPress={() => navigation.goBack()}
+            rippleColor="#ffffff40"
+          />
+        </View>
+      ),
+      headerRight: () => (
+        <View style={{ paddingRight: 7.5 }}>
+          <IconButton
+            icon={"refresh"}
+            color={theme[global.theme].emphasisedTextColor}
+            onPress={getPosts}
             rippleColor="#ffffff40"
           />
         </View>
@@ -48,20 +59,6 @@ const Thread = ({ route, navigation }) => {
         setRefreshing(false);
       }
     );
-  };
-  
-  const replaceText = (text) => {
-    text = text
-      ?.replace(/&quot;/g,'"')
-      .replace(/&#039;/g,'\'')
-      .replace(/&amp;/g,'&')
-      .replace(/&gt;/g,'>')
-      .replace(/<br>/g,'\n')
-      .replace(/<wbr>|\[Embed]|\[Open]/g,'')
-
-    return text.substr(0, 250).trim().length < text.length ?
-      text.substr(0, 250).trim() + "..." :
-      text
   };
   
   const [posts, setPosts] = useState([]);

@@ -13,6 +13,7 @@ import { IconButton } from 'react-native-paper';
 import { Button } from "../components/button";
 import axios from "axios";
 
+import { replaceText } from '../assets/helper'
 import theme from '../assets/style'
 
 global.theme = 'dark';
@@ -22,6 +23,16 @@ const Board = ({ route, navigation }) => {
   useEffect(() => {
     navigation.setOptions({
       headerTitle: board?.title,
+      headerRight: () => (
+        <View style={{ paddingRight: 7.5 }}>
+          <IconButton
+            icon={"refresh"}
+            color={theme[global.theme].emphasisedTextColor}
+            onPress={getThreads}
+            rippleColor="#ffffff40"
+          />
+        </View>
+      ),
     });
     board ? getThreads() : null;
   }, [route]);
@@ -62,20 +73,6 @@ const Board = ({ route, navigation }) => {
     );
   };
 
-  const replaceText = (text) => {
-    text = text
-      ?.replace(/&quot;/g,'"')
-      .replace(/&#039;/g,'\'')
-      .replace(/&amp;/g,'&')
-      .replace(/&gt;/g,'>')
-      .replace(/<br>/g,'\n')
-      .replace(/<wbr>|\[Embed]|\[Open]/g,'')
-
-    return text.substr(0, 250).trim().length < text.length ?
-      text.substr(0, 250).trim() + "..." :
-      text
-  };
-
   const nextPage = () => {
     setShownPages([...shownPages, ...pages[shown].threads]);
     setShown(shown + 1);
@@ -113,9 +110,9 @@ const Board = ({ route, navigation }) => {
                   >
                     { item?.filename ? <Image style={styles.list.icon} source={{ uri: 'https://i.4cdn.org/' + board.board + '/' + item.tim + 's.jpg' }}/> : null }
                     <View style={{flex: 1, flexGrow: 1}}>
-                      {item?.sub ? <Text style={styles.list.title}>{replaceText(item?.sub)}</Text> : null}
+                      {item?.sub ? <Text style={styles.list.title}>{replaceText(item?.sub, 250)}</Text> : null}
                       <Text style={styles.list.detail}>{item?.name} {item?.now}</Text>
-                      {item?.com ? <Text style={styles.list.meta}>{replaceText(item?.com)}</Text> : null}
+                      {item?.com ? <Text style={styles.list.meta}>{replaceText(item?.com, 250)}</Text> : null}
                     </View>
                   </Pressable>
                 </View>
