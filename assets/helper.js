@@ -11,6 +11,34 @@ export const replaceText = (text, ellipsis = text.length) => {
     text
 };
 
+const replaceTagWithObject = (array, tag, endtag, name) => {
+  var output = []
+  array.map(obj => {
+    if(obj.type == 'text') {
+      let arr = obj.text.split(tag);
+
+      output.push({
+        type: 'text',
+        text: arr.shift(),
+      });
+
+      arr.map(string => {
+        let body = string.split(endtag);
+
+        output.push({
+          type: name,
+          text: body.shift(),
+        }, {
+          type: 'text',
+          text: body.join(""),
+        })
+      });
+    } else 
+      output.push(obj);
+  });
+  return output;
+}
+
 export const splitText = (text) => {
   var input = [];
 
@@ -83,161 +111,12 @@ export const splitText = (text) => {
       newOutput.push(obj);
   });
 
-  output = [];
+  newOutput = replaceTagWithObject(newOutput, '<span class="quote">', '</span>', 'green-text');
+  newOutput = replaceTagWithObject(newOutput, '<i>', '</i>', 'italic-text');
+  newOutput = replaceTagWithObject(newOutput, '<s>', '</s>', 'spoiler-text');
+  newOutput = replaceTagWithObject(newOutput, '<b><u>', '</u></b>', 'bold-underline-text');
+  newOutput = replaceTagWithObject(newOutput, '<b>', '</b>', 'bold-text');
+  newOutput = replaceTagWithObject(newOutput, '<u>', '</u>', 'underline-text');
   
-  newOutput.map(obj => {
-    if(obj.type == 'text') {
-      let arr = obj.text.split('<span class="quote">');
-
-      output.push({
-        type: 'text',
-        text: arr.shift(),
-      });
-
-      arr.map(gt => {
-        let body = gt.split('</span>');
-
-        output.push({
-          type: 'green-text',
-          text: body.shift(),
-        }, {
-          type: 'text',
-          text: body.join(""),
-        })
-      });
-    } else 
-      output.push(obj);
-  });
-
-  newOutput = [];
-  
-  output.map(obj => {
-    if(obj.type == 'text') {
-      let arr = obj.text.split('<i>');
-
-      newOutput.push({
-        type: 'text',
-        text: arr.shift(),
-      });
-
-      arr.map(it => {
-        let body = it.split('</i>');
-
-        newOutput.push({
-          type: 'italic-text',
-          text: body.shift(),
-        }, {
-          type: 'text',
-          text: body.join(""),
-        })
-      });
-    } else 
-    newOutput.push(obj);
-  });
-  
-  output = [];
-  
-  newOutput.map(obj => {
-    if(obj.type == 'text') {
-      let arr = obj.text.split('<s>');
-
-      output.push({
-        type: 'text',
-        text: arr.shift(),
-      });
-
-      arr.map(spoiler => {
-        let body = spoiler.split('</s>');
-
-        output.push({
-          type: 'spoiler-text',
-          text: body.shift(),
-        }, {
-          type: 'text',
-          text: body.join(""),
-        })
-      });
-    } else 
-      output.push(obj);
-  });
-
-  newOutput = [];
-  
-  output.map(obj => {
-    if(obj.type == 'text') {
-      let arr = obj.text.split('<b><u>');
-
-      newOutput.push({
-        type: 'text',
-        text: arr.shift(),
-      });
-
-      arr.map(it => {
-        let body = it.split('</u></b>');
-
-        newOutput.push({
-          type: 'bold-underline-text',
-          text: body.shift(),
-        }, {
-          type: 'text',
-          text: body.join(""),
-        })
-      });
-    } else 
-    newOutput.push(obj);
-  });
-  
-  output = [];
-  
-  newOutput.map(obj => {
-    if(obj.type == 'text') {
-      let arr = obj.text.split('<u>');
-
-      output.push({
-        type: 'text',
-        text: arr.shift(),
-      });
-
-      arr.map(spoiler => {
-        let body = spoiler.split('</u>');
-
-        output.push({
-          type: 'underline-text',
-          text: body.shift(),
-        }, {
-          type: 'text',
-          text: body.join(""),
-        })
-      });
-    } else 
-      output.push(obj);
-  });
-
-  newOutput = [];
-  
-  output.map(obj => {
-    if(obj.type == 'text') {
-      let arr = obj.text.split('<b>');
-
-      newOutput.push({
-        type: 'text',
-        text: arr.shift(),
-      });
-
-      arr.map(it => {
-        let body = it.split('</b>');
-
-        newOutput.push({
-          type: 'bold-text',
-          text: body.shift(),
-        }, {
-          type: 'text',
-          text: body.join(""),
-        })
-      });
-    } else 
-    newOutput.push(obj);
-  });
-  
-  return output.filter(inp => inp.text != "");
+  return newOutput.filter(inp => inp.text != "");
 };
