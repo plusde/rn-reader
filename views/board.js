@@ -18,8 +18,6 @@ import axios from "axios";
 import { replaceText, splitText } from '../assets/helper';
 import theme from '../assets/style';
 
-global.theme = 'dark';
-
 const Board = ({ route, navigation }) => {
   const board = route.params?.board;
   useEffect(() => {
@@ -57,8 +55,13 @@ const Board = ({ route, navigation }) => {
 
   const getThreads = () => {
     setRefreshing(true);
-    axios.get("https://a.4cdn.org/" + board.board + "/catalog.json")
+    axios.get("https://a.4cdn.org/" + board.board + "/catalog.json", {
+      headers: {
+        'If-Modified-Since': refreshStamp?.toLocaleDateString('en_US', {timeZone: 'UTC'})
+      }
+    })
       .then(response => {
+        setRefreshStamp(new Date(Date.now()))
         setPages(response.data);
         setShownPages(response.data[0].threads);
         setShown(1);
@@ -84,6 +87,7 @@ const Board = ({ route, navigation }) => {
   const [shown, setShown] = useState(0);
   const [shownPages, setShownPages] = useState(pages[shown]?.threads);
   const [refreshing, setRefreshing] = useState(false);
+  const [refreshStamp, setRefreshStamp] = useState(null);
 
   return (
     <View style={styles.container}>
@@ -100,7 +104,7 @@ const Board = ({ route, navigation }) => {
             }
             keyExtractor={item => item.no}
             renderItem={({ item, index }) =>
-              <View>
+              <View key={index}>
                 <ListItem
                   board={board}
                   index={index}

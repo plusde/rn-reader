@@ -48,8 +48,13 @@ const Thread = ({ route, navigation }) => {
   }, []);
 
   const getPosts = () => {
-    axios.get("https://a.4cdn.org/" + board.board + "/thread/" + thread.no + ".json")
+    axios.get("https://a.4cdn.org/" + board.board + "/thread/" + thread.no + ".json", {
+        headers: {
+          'If-Modified-Since': refreshStamp?.toLocaleDateString('en_US', {timeZone: 'UTC'})
+        }
+      })
       .then(response => {
+        setRefreshStamp(new Date(Date.now()))
         setPosts(response.data.posts);
         setRefreshing(false);
       })
@@ -66,6 +71,7 @@ const Thread = ({ route, navigation }) => {
   
   const [posts, setPosts] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [refreshStamp, setRefreshStamp] = useState(null);
 
   return (
     <View style={styles.container}>

@@ -10,6 +10,8 @@ import * as WebBrowser from 'expo-web-browser';
 import { replaceText, splitText } from '../assets/helper';
 import theme from '../assets/style';
 
+global.theme = 'dark'; // this somehow is the first component to load ?
+
 export default ListItem = ({ board, index, isOP = false, item, onPress}) => {
   return (
     <View style={[styles.item, isOP ? styles.op : null, item?.filename ? {paddingLeft: 8} : {paddingLeft: 12}]} key={index}>
