@@ -26,7 +26,7 @@ export default ListItem = ({ board, isOP = false, item, onPress, onPressImage}) 
         onPress={onPress}
       >
         { item?.filename ? 
-          <View style={styles.icon.container}>
+          <View style={styles.iconContainer}>
             <Pressable
               android_ripple={{ 
                 color: '#ffffff40',
@@ -42,10 +42,10 @@ export default ListItem = ({ board, isOP = false, item, onPress, onPressImage}) 
           { item?.sub ? <Text style={styles.title}>{ replaceText(item?.sub) }</Text> : null }
           <Text style={styles.detail}>{ item?.name } { item?.now } No.{item?.no}</Text>
           { item?.com ? <View>
-            { splitText(onPress ? replaceText(item?.com, 250) : replaceText(item?.com)).map(obj => ( // console.log(obj),
-                obj.type == 'text' ? <Text style={styles.meta}>{ obj.text }</Text> :
+            { splitText(onPress ? replaceText(item?.com, 250) : replaceText(item?.com)).map((obj, index) => ( // console.log(obj),
+                obj.type == 'text' ? <Text style={styles.meta} key={index}>{ obj.text }</Text> :
                 obj.type == 'link' ? 
-                  <Pressable onPress={() => 
+                  <Pressable key={index} onPress={() => 
                     WebBrowser.openBrowserAsync(obj.href, 
                       {
                         secondaryToolbarColor: '#000000',
@@ -55,13 +55,13 @@ export default ListItem = ({ board, isOP = false, item, onPress, onPressImage}) 
                   >
                     <Text style={styles.link}>{ obj.text }</Text>
                   </Pressable> :
-                obj.type == 'custom-text' ? <Text style={[styles.meta, obj.style]}>{ obj.text }</Text> :
-                obj.type == 'green-text' ? <Text style={styles.greentext}>{ obj.text }</Text> :
-                obj.type == 'italic-text' ? <Text style={[styles.meta, {fontStyle: 'italic'}]}>{ obj.text }</Text> :
-                obj.type == 'bold-text' ? <Text style={[styles.meta, {fontWeight: 'bold'}]}>{ obj.text }</Text> :
-                obj.type == 'underline-text' ? <Text style={[styles.meta, {textDecorationLine: 'underline'}]}>{ obj.text }</Text> :
-                obj.type == 'bold-underline-text' ? <Text style={[styles.meta, {textDecorationLine: 'underline', fontWeight: 'bold'}]}>{ obj.text }</Text> :
-                obj.type == 'spoiler-text' ? <Spoiler text={obj.text} /> :
+                obj.type == 'custom-text' ? <Text key={index} style={[styles.meta, obj.style]}>{ obj.text }</Text> :
+                obj.type == 'green-text' ? <Text key={index} style={styles.greentext}>{ obj.text }</Text> :
+                obj.type == 'italic-text' ? <Text key={index} style={[styles.meta, {fontStyle: 'italic'}]}>{ obj.text }</Text> :
+                obj.type == 'bold-text' ? <Text key={index} style={[styles.meta, {fontWeight: 'bold'}]}>{ obj.text }</Text> :
+                obj.type == 'underline-text' ? <Text key={index} style={[styles.meta, {textDecorationLine: 'underline'}]}>{ obj.text }</Text> :
+                obj.type == 'bold-underline-text' ? <Text key={index} style={[styles.meta, {textDecorationLine: 'underline', fontWeight: 'bold'}]}>{ obj.text }</Text> :
+                obj.type == 'spoiler-text' ? <Spoiler key={index} text={obj.text} /> :
                 null
             )) }
           </View> : null }
@@ -98,16 +98,16 @@ const styles = StyleSheet.create({
       width: 80,
     }
   },
+  iconContainer: {
+    elevation: 0, 
+    alignSelf: 'flex-start', 
+    justifyContent: 'center',
+    marginRight: 10,
+    marginTop: 2,
+    marginBottom: 2,
+    borderRadius: 6,
+  },
   icon: {
-    container: {
-      elevation: 0, 
-      alignSelf: 'flex-start', 
-      justifyContent: 'center',
-      marginRight: 10,
-      marginTop: 2,
-      marginBottom: 2,
-      borderRadius: 6,
-    },
     borderRadius: 6,
     height: 40,
     width: 40,
