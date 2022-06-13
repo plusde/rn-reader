@@ -65,6 +65,11 @@ export default ListItem = ({ board, isOP = false, item, onPress, onPressImage}) 
                 null
             )) }
           </View> : null }
+          <View style={{flexDirection: 'row', marginTop: 3}}>
+            { item?.replies ? <Text style={styles.detail}>{ item?.replies } replies</Text> : null }
+            { item?.replies && item?.images ? <Text style={styles.detail}>, </Text> : null }
+            { item?.images ? <Text style={styles.detail}>{ item?.images } {item?.images == 1 ? "image" : "images"}</Text> : null }
+          </View>
         </View>
       </Pressable>
     </View>
