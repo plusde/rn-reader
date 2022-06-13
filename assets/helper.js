@@ -71,7 +71,6 @@ export const splitText = (text) => {
         text: body.join(""),
       });
     });
-  
   })
 
   var newOutput = []
@@ -110,6 +109,59 @@ export const splitText = (text) => {
     } else 
       newOutput.push(obj);
   });
+
+  var output = [];
+
+  newOutput.map(inp => {
+    if(inp.type == 'text') {
+      let arr = inp.text.split('http://');
+      output.push({
+        type: 'text',
+        text: arr.shift(),
+      });
+    
+      arr.map(link => {
+        let linkArr = link.split(' ');
+        let href = linkArr.shift();
+        output.push({
+          type: 'link',
+          text: 'http://' + href,
+          href: 'http://' + href,
+        }, {
+          type: 'text',
+          text: linkArr.join(""),
+        });
+      });
+    } else 
+      output.push(inp);
+  })
+
+  var newOutput = []
+
+  output.map(obj => {
+    if(obj.type == 'text') {
+      let arr = obj.text.split('https://');
+      newOutput.push({
+        type: 'text',
+        text: arr.shift(),
+      });
+    
+      arr.map(link => {
+        let linkArr = link.split(' ');
+        let href = linkArr.shift();
+        newOutput.push({
+          type: 'link',
+          text: 'https://' + href,
+          href: 'https://' + href,
+        }, {
+          type: 'text',
+          text: linkArr.join(""),
+        });
+      });
+    } else 
+      newOutput.push(obj);
+  });
+
 
   newOutput = replaceTagWithObject(newOutput, '<span class="quote">', '</span>', 'green-text');
   newOutput = replaceTagWithObject(newOutput, '<i>', '</i>', 'italic-text');
