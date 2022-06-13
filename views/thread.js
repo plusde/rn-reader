@@ -9,11 +9,14 @@ import {
   Pressable,
   Image,
 } from "react-native";
+import * as Linking from 'expo-linking';
 import { IconButton } from 'react-native-paper';
 import axios from "axios";
 
-import { replaceText } from '../assets/helper'
-import theme from '../assets/style'
+import ListItem from '../components/listItem';
+
+import { replaceText, splitText } from '../assets/helper';
+import theme from '../assets/style';
 
 const Thread = ({ route, navigation }) => {
   const { board, thread } = route.params;
@@ -76,27 +79,13 @@ const Thread = ({ route, navigation }) => {
           />
         }
         keyExtractor={item => item.no}
-        renderItem={({ item, index }) =>
-          <View>
-            { index == 0 ? 
-              <View style={[styles.list.item, styles.list.op, item?.filename ? {paddingLeft: 8} : {paddingLeft: 12}]}>
-                { item?.filename ? <Image style={styles.list.op.icon} source={{ uri: 'https://i.4cdn.org/' + board.board + '/' + item.tim + 's.jpg' }}/> : null }
-                <View style={{flex: 1, flexGrow: 1}}>
-                  {item?.sub ? <Text style={styles.list.title}>{replaceText(item?.sub)}</Text> : null}
-                  <Text style={styles.list.detail}>{item?.name} {item?.now}</Text>
-                  {item?.com ? <Text style={styles.list.meta}>{replaceText(item?.com)}</Text> : null}
-                </View>
-              </View>
-            :
-              <View style={[styles.list.item, item?.filename ? {paddingLeft: 8} : {paddingLeft: 12}]}>
-                { item?.filename ? <Image style={styles.list.icon} source={{ uri: 'https://i.4cdn.org/' + board.board + '/' + item.tim + 's.jpg' }}/> : null }
-                <View style={{flex: 1, flexGrow: 1}}>
-                  <Text style={styles.list.detail}>{item?.name} {item?.now}</Text>
-                  {item?.com ? <Text style={styles.list.meta}>{replaceText(item?.com)}</Text> : null}
-                </View>
-              </View>
-            }
-          </View>
+        renderItem={ ({ item, index }) => 
+          <ListItem
+            board={board}
+            index={index}
+            isOP={index == 0}
+            item={item}
+          />
         }
       />
     </View>
@@ -112,51 +101,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexGrow: 1,
     width: '100%',
-    item: {
-      flexGrow: 1,
-      padding: 6,
-      paddingRight: 12,
-      margin: 10,
-      marginTop: 10,
-      marginBottom: 5,
-      backgroundColor: theme[global.theme].inactiveAccentColor,
-      borderRadius: 6,
-      elevation: 0,
-      flexDirection: 'row',
-    },
-    op: {
-      backgroundColor: theme[global.theme].backgroundColor,
-      marginBottom: 0,
-      icon: {
-        marginRight: 10,
-        marginTop: 2,
-        marginBottom: 2,
-        borderRadius: 6,
-        height: 80,
-        width: 80,
-      }
-    },
-    icon: {
-      marginRight: 10,
-      marginTop: 2,
-      marginBottom: 2,
-      borderRadius: 6,
-      height: 40,
-      width: 40,
-    },
-    title: {
-      fontWeight: 'bold',
-      fontSize: 14,
-      color: theme[global.theme].emphasisedTextColor
-    },
-    meta: {
-      fontSize: 14,
-      color: theme[global.theme].textColor
-    },
-    detail: {
-      fontSize: 14,
-      color: theme[global.theme].secondaryTextColor
-    },
     notice: {
       fontSize: 14,
       fontStyle: 'italic',

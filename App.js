@@ -26,7 +26,7 @@ const screenOptions = {
   headerTitleStyle: {
     color: theme[global.theme].emphasisedTextColor,
   },
-}
+};
 
 const navigators = {
   BoardNavigator: () => {
@@ -39,8 +39,8 @@ const navigators = {
         <Drawer.Screen name="Board" component={Board} />
       </Drawer.Navigator>
     )
-  }
-}
+  },
+};
 
 const App = () => {
   return (
@@ -57,6 +57,6 @@ const App = () => {
       </Stack.Navigator>
     </NavigationContainer>
   );
-}
+};
 
 export default App;

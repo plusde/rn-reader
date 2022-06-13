@@ -13,7 +13,7 @@ import { IconButton } from 'react-native-paper';
 import { Button } from "../components/button";
 import axios from "axios";
 
-import theme from '../assets/style'
+import theme from '../assets/style';
 
 const Sidebar = ({ props, navigation }) => {
 
@@ -38,7 +38,7 @@ const Sidebar = ({ props, navigation }) => {
         setRefreshing(false);
       }
     );
-  }
+  };
 
   useEffect(() => {
     getBoards();

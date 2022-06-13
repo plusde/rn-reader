@@ -9,12 +9,14 @@ import {
   Pressable,
   Image,
 } from "react-native";
+import * as Linking from 'expo-linking';
 import { IconButton } from 'react-native-paper';
+import ListItem from '../components/listItem';
 import { Button } from "../components/button";
 import axios from "axios";
 
-import { replaceText } from '../assets/helper'
-import theme from '../assets/style'
+import { replaceText, splitText } from '../assets/helper';
+import theme from '../assets/style';
 
 global.theme = 'dark';
 
@@ -99,23 +101,12 @@ const Board = ({ route, navigation }) => {
             keyExtractor={item => item.no}
             renderItem={({ item, index }) =>
               <View>
-                <View style={[styles.list.item, item?.filename ? {paddingLeft: 8} : {paddingLeft: 12}]}>
-                  <Pressable
-                    style={{flexDirection: 'row', flex: 1, flexGrow: 1}}
-                    android_ripple={{
-                      color: "#ffffff40",
-                      borderless: true,
-                    }}
-                    onPress={() => navigation.navigate('Thread', {board: board, thread: item})}
-                  >
-                    { item?.filename ? <Image style={styles.list.icon} source={{ uri: 'https://i.4cdn.org/' + board.board + '/' + item.tim + 's.jpg' }}/> : null }
-                    <View style={{flex: 1, flexGrow: 1}}>
-                      {item?.sub ? <Text style={styles.list.title}>{replaceText(item?.sub, 250)}</Text> : null}
-                      <Text style={styles.list.detail}>{item?.name} {item?.now}</Text>
-                      {item?.com ? <Text style={styles.list.meta}>{replaceText(item?.com, 250)}</Text> : null}
-                    </View>
-                  </Pressable>
-                </View>
+                <ListItem
+                  board={board}
+                  index={index}
+                  item={item}
+                  onPress={() => navigation.navigate('Thread', {board: board, thread: item})}
+                />
                 { index != shownPages.length - 1 ? null :
                   <View style={{margin: 10, marginBottom: 15, alignItems: 'center'}}>
                     { shown == pages.length ? 
@@ -194,6 +185,15 @@ const styles = StyleSheet.create({
     meta: {
       fontSize: 14,
       color: theme[global.theme].textColor
+    },
+    greentext: {
+      fontSize: 14,
+      color: theme[global.theme].greenTextColor
+    },
+    link: {
+      fontSize: 14,
+      color: theme[global.theme].linkTextColor,
+      textDecorationLine: 'underline',
     },
     detail: {
       fontSize: 14,

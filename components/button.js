@@ -5,7 +5,7 @@ import {
   Pressable
 } from 'react-native';
 
-import theme from '../assets/style'
+import theme from '../assets/style';
 
 export const Button = ({ text = "Submit", onPress, width = 250 }) => {
   return (
@@ -36,4 +36,4 @@ export const Button = ({ text = "Submit", onPress, width = 250 }) => {
       </Pressable>
     </View>
   )
-}
+};
