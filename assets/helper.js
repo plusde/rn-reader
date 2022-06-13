@@ -161,6 +161,83 @@ export const splitText = (text) => {
       output.push(obj);
   });
 
+  newOutput = [];
+  
+  output.map(obj => {
+    if(obj.type == 'text') {
+      let arr = obj.text.split('<b><u>');
 
+      newOutput.push({
+        type: 'text',
+        text: arr.shift(),
+      });
+
+      arr.map(it => {
+        let body = it.split('</u></b>');
+
+        newOutput.push({
+          type: 'bold-underline-text',
+          text: body.shift(),
+        }, {
+          type: 'text',
+          text: body.join(""),
+        })
+      });
+    } else 
+    newOutput.push(obj);
+  });
+  
+  output = [];
+  
+  newOutput.map(obj => {
+    if(obj.type == 'text') {
+      let arr = obj.text.split('<u>');
+
+      output.push({
+        type: 'text',
+        text: arr.shift(),
+      });
+
+      arr.map(spoiler => {
+        let body = spoiler.split('</u>');
+
+        output.push({
+          type: 'underline-text',
+          text: body.shift(),
+        }, {
+          type: 'text',
+          text: body.join(""),
+        })
+      });
+    } else 
+      output.push(obj);
+  });
+
+  newOutput = [];
+  
+  output.map(obj => {
+    if(obj.type == 'text') {
+      let arr = obj.text.split('<b>');
+
+      newOutput.push({
+        type: 'text',
+        text: arr.shift(),
+      });
+
+      arr.map(it => {
+        let body = it.split('</b>');
+
+        newOutput.push({
+          type: 'bold-text',
+          text: body.shift(),
+        }, {
+          type: 'text',
+          text: body.join(""),
+        })
+      });
+    } else 
+    newOutput.push(obj);
+  });
+  
   return output.filter(inp => inp.text != "");
 };

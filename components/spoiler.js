@@ -13,7 +13,7 @@ export default Spoiler = ({ text = "Spoiler" }) => {
     <View style={{ borderRadius: 3, elevation: 0}}>
       <Pressable
         style={{
-          backgroundColor: theme[global.theme].headerColor,
+          backgroundColor: theme[global.theme].accentColor,
           padding: 3,
           paddingLeft: 6,
           paddingRight: 6,

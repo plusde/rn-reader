@@ -87,6 +87,7 @@ const Thread = ({ route, navigation }) => {
         keyExtractor={item => item.no}
         renderItem={ ({ item, index }) => 
           <ListItem
+            key={index}
             board={board}
             index={index}
             isOP={index == 0}

@@ -14,9 +14,9 @@ import theme from '../assets/style';
 
 global.theme = 'dark'; // this somehow is the first component to load ?
 
-export default ListItem = ({ board, index, isOP = false, item, onPress, onPressImage}) => {
+export default ListItem = ({ board, isOP = false, item, onPress, onPressImage}) => {
   return (
-    <View style={[styles.item, isOP ? styles.op : null, item?.filename ? {paddingLeft: 8} : {paddingLeft: 12}]} key={index}>
+    <View style={[styles.item, isOP ? styles.op : null, item?.filename ? {paddingLeft: 8} : {paddingLeft: 12}]}>
       <Pressable
         style={{flexDirection: 'row', flex: 1, flexGrow: 1}}
         android_ripple={ onPress ? { 
@@ -58,6 +58,9 @@ export default ListItem = ({ board, index, isOP = false, item, onPress, onPressI
                 obj.type == 'custom-text' ? <Text style={[styles.meta, obj.style]}>{ obj.text }</Text> :
                 obj.type == 'green-text' ? <Text style={styles.greentext}>{ obj.text }</Text> :
                 obj.type == 'italic-text' ? <Text style={[styles.meta, {fontStyle: 'italic'}]}>{ obj.text }</Text> :
+                obj.type == 'bold-text' ? <Text style={[styles.meta, {fontWeight: 'bold'}]}>{ obj.text }</Text> :
+                obj.type == 'underline-text' ? <Text style={[styles.meta, {textDecorationLine: 'underline'}]}>{ obj.text }</Text> :
+                obj.type == 'bold-underline-text' ? <Text style={[styles.meta, {textDecorationLine: 'underline', fontWeight: 'bold'}]}>{ obj.text }</Text> :
                 obj.type == 'spoiler-text' ? <Spoiler text={obj.text} /> :
                 null
             )) }
