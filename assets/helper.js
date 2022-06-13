@@ -4,7 +4,6 @@ export const replaceText = (text, ellipsis = text.length) => {
     .replace(/&#039;/g,'\'')
     .replace(/&amp;/g,'&')
     .replace(/&gt;/g,'>')
-    .replace(/<br>/g,'\n')
     .replace(/<wbr>|\[Embed]|\[Open]/g,'')
 
   return text?.substr(0, ellipsis).length < text?.length ?
@@ -13,26 +12,39 @@ export const replaceText = (text, ellipsis = text.length) => {
 };
 
 export const splitText = (text) => {
-  var output = [];
-  let arr = text.split('<a href="');
-  output.push({
-    type: 'text',
-    text: arr.shift(),
+  var input = [];
+
+  text.split('<br>').map(inp => {
+    input.push({
+      type: 'text',
+      text: inp,
+    })
   });
 
-  arr.map(link => {
-    let linkArr = link.split('">');
-    let href = linkArr.shift();
-    let body = linkArr.join('">').split('</a>');
+  var output = [];
+
+  input.map(inp => {
+    let arr = inp.text.split('<a href="');
     output.push({
-      type: 'link',
-      text: body.shift(),
-      href: href,
-    }, {
       type: 'text',
-      text: body.join(""),
+      text: arr.shift(),
     });
-  });
+  
+    arr.map(link => {
+      let linkArr = link.split('">');
+      let href = linkArr.shift();
+      let body = linkArr.join('">').split('</a>');
+      output.push({
+        type: 'link',
+        text: body.shift(),
+        href: href,
+      }, {
+        type: 'text',
+        text: body.join(""),
+      });
+    });
+  
+  })
 
   var newOutput = []
 
@@ -122,6 +134,33 @@ export const splitText = (text) => {
     } else 
     newOutput.push(obj);
   });
+  
+  output = [];
+  
+  newOutput.map(obj => {
+    if(obj.type == 'text') {
+      let arr = obj.text.split('<s>');
 
-  return newOutput;
+      output.push({
+        type: 'text',
+        text: arr.shift(),
+      });
+
+      arr.map(spoiler => {
+        let body = spoiler.split('</s>');
+
+        output.push({
+          type: 'spoiler-text',
+          text: body.shift(),
+        }, {
+          type: 'text',
+          text: body.join(""),
+        })
+      });
+    } else 
+      output.push(obj);
+  });
+
+
+  return output.filter(inp => inp.text != "");
 };
