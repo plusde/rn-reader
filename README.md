@@ -22,5 +22,5 @@ Run `npm install && expo start` and scan the QR code to try out the app.
 A download link will be available once basic functionality requirements are met.  
 - [X] Browsing boards
 - [X] Browsing threads
-- [] Navigating threads by replies
-- [] Viewing images
+- [ ] Navigating threads by replies
+- [ ] Viewing images
