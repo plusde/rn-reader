@@ -17,3 +17,10 @@ Run `npm install && expo start` and scan the QR code to try out the app.
 * Bookmarking threads
 * Settings and about page
 * Handling 4chan links
+
+## Download
+A download link will be available once basic functionality requirements are met.  
+- [X] Browsing boards
+- [X] Browsing threads
+- [] Navigating threads by replies
+- [] Viewing images
