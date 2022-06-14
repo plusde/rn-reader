@@ -11,9 +11,11 @@ import {
 } from "react-native";
 import * as Linking from 'expo-linking';
 import { IconButton } from 'react-native-paper';
-import ListItem from '../components/listItem';
-import { Button } from "../components/button";
 import axios from "axios";
+
+import ListItem from '../components/listItem';
+import ImageViewer from "../components/imageViewer";
+import { Button } from "../components/button";
 
 import { replaceText, splitText } from '../assets/helper';
 import theme from '../assets/style';
@@ -78,6 +80,28 @@ const Board = ({ route, navigation }) => {
     );
   };
 
+  const getPosts = () => {
+    axios.get("https://a.4cdn.org/" + board.board + "/thread/" + thread.no + ".json", {
+        headers: {
+          'If-Modified-Since': imageRefreshStamp?.toLocaleDateString('en_US', {timeZone: 'UTC'})
+        }
+      })
+      .then(response => {
+        setImageRefreshStamp(new Date(Date.now()))
+        setPosts(response.data.posts);
+        setRefreshing(false);
+      })
+      .catch(error => {
+        ToastAndroid.showWithGravity(
+          error.message,
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER
+        );
+        setRefreshing(false);
+      }
+    );
+  };
+
   const nextPage = () => {
     setShownPages([...shownPages, ...pages[shown].threads]);
     setShown(shown + 1);
@@ -88,9 +112,16 @@ const Board = ({ route, navigation }) => {
   const [shownPages, setShownPages] = useState(pages[shown]?.threads);
   const [refreshing, setRefreshing] = useState(false);
   const [refreshStamp, setRefreshStamp] = useState(null);
+  const [posts, setPosts] = useState([]);
+  const [imageRefreshStamp, setImageRefreshStamp] = useState(null);
+  const [imageViewerVisible, setImageViewerVisible] = useState(false);
 
   return (
     <View style={styles.container}>
+      <ImageViewer
+        isVisible={imageViewerVisible}
+        onRequestClose={() => setImageViewerVisible(false)}
+      />
       { board ?
         <View style={styles.list}>
           <FlatList
@@ -110,6 +141,7 @@ const Board = ({ route, navigation }) => {
                   index={index}
                   item={item}
                   onPress={() => navigation.navigate('Thread', {board: board, thread: item})}
+                  onImagePress={() => setImageViewerVisible(true)}
                 />
                 { index != shownPages.length - 1 ? null :
                   <View style={{margin: 10, marginBottom: 15, alignItems: 'center'}}>
@@ -162,47 +194,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexGrow: 1,
     width: '100%',
-    item: {
-      flexGrow: 1,
-      padding: 6,
-      paddingRight: 12,
-      margin: 10,
-      marginTop: 10,
-      marginBottom: 5,
-      backgroundColor: theme[global.theme].inactiveAccentColor,
-      borderRadius: 6,
-      elevation: 0,
-    },
-    icon: {
-      marginRight: 10,
-      marginTop: 2,
-      marginBottom: 2,
-      borderRadius: 6,
-      height: 40,
-      width: 40,
-    },
-    title: {
-      fontWeight: 'bold',
-      fontSize: 14,
-      color: theme[global.theme].emphasisedTextColor
-    },
-    meta: {
-      fontSize: 14,
-      color: theme[global.theme].textColor
-    },
-    greentext: {
-      fontSize: 14,
-      color: theme[global.theme].greenTextColor
-    },
-    link: {
-      fontSize: 14,
-      color: theme[global.theme].linkTextColor,
-      textDecorationLine: 'underline',
-    },
-    detail: {
-      fontSize: 14,
-      color: theme[global.theme].secondaryTextColor
-    },
     notice: {
       fontSize: 14,
       fontStyle: 'italic',

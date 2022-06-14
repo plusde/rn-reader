@@ -14,7 +14,7 @@ import theme from '../assets/style';
 
 global.theme = 'dark'; // this somehow is the first component to load ?
 
-export default ListItem = ({ board, isOP = false, item, onPress, onPressImage}) => {
+export default ListItem = ({ board, isOP = false, item, onPress, onImagePress}) => {
   return (
     <View style={[styles.item, isOP ? styles.op : null, item?.filename ? {paddingLeft: 8} : {paddingLeft: 12}]}>
       <Pressable
@@ -32,7 +32,7 @@ export default ListItem = ({ board, isOP = false, item, onPress, onPressImage}) 
                 color: '#ffffff40',
                 borderless: true,
               }}
-              onPress={onPressImage}
+              onPress={onImagePress}
             >
               <Image style={isOP ? styles.op.icon : styles.icon} source={{ uri: 'https://i.4cdn.org/' + board.board + '/' + item.tim + 's.jpg' }}/>
             </Pressable>
