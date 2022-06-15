@@ -48,8 +48,9 @@ export default ListItem = ({ board, isLast= false, isOP = false, item, navigatio
                 obj.type == 'link' ? 
                   <Pressable hitSlop={6} key={index} onPress={() => {
                     if (obj.href.substr(0,1) == '/') {
-                      let [board, _, thread_reply] = obj.href.split('/');
+                      let [_, board, __, thread_reply] = obj.href.split('/');
                       let [thread, reply] = thread_reply.split('#p');
+                      navigation?.push('Thread', {board: {board: board}, thread: {no: thread}});
                     } else if (obj.href.substr(0,1) == '#') {
                       let post = obj.href.substr(2).split('"')[0];
                       pressedQuote = post;

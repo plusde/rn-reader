@@ -57,6 +57,7 @@ const Thread = ({ route, navigation }) => {
       .then(response => {
         setRefreshStamp(new Date(Date.now()))
         setPosts(response.data.posts);
+        if(response.data.posts[0]?.sub) navigation.setOptions({headerTitle: response.data.posts[0]?.sub})
         setRefreshing(false);
       })
       .catch(error => {
