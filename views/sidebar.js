@@ -24,7 +24,7 @@ const Sidebar = ({ props, navigation }) => {
 
   const getBoards = async () => {
     setRefreshing(true);
-    axios.get("http://a.4cdn.org/boards.json")
+    axios.get("https://a.4cdn.org/boards.json")
       .then(response => {
         setBoards(response.data.boards);
         setRefreshing(false);
