@@ -59,7 +59,7 @@ export default ReplyViewer = ({ board, isVisible, onRequestClose, posts, replies
                 <ListItem
                   board={board}
                   index={index}
-                  isLast={post ? true : posts.filter(x => x?.com?.includes('#p' + item.no)).length - 1 == index}
+                  isLast={commentChain[commentChain.length - 1].type == 'post' ? true : posts.filter(x => x?.com?.includes('#p' + commentChain[commentChain.length - 1].no)).length - 1 == index}
                   item={item}
                   onImagePress={() => setImageViewerVisible(true)}
                   onQuotePress={post => setCommentChain([...commentChain, {type: 'post', no: post}])}
