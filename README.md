@@ -24,3 +24,4 @@ A download link will be available once basic functionality requirements are met.
 - [X] Browsing threads
 - [X] Navigating threads by replies
 - [ ] Viewing images
+- [ ] Handling 4chan links (maybe)

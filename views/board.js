@@ -130,6 +130,7 @@ const Board = ({ route, navigation }) => {
                 colors={[theme[global.theme].accentColor]}
               />
             }
+            initialNumToRender={7}
             keyExtractor={item => item.no}
             renderItem={({ item, index }) =>
               <View key={index}>
