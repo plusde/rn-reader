@@ -164,6 +164,7 @@ export const splitText = (text) => {
 
 
   newOutput = replaceTagWithObject(newOutput, '<span class="quote">', '</span>', 'green-text');
+  newOutput = replaceTagWithObject(newOutput, '<span class="deadlink">', '</span>', 'dead-text');
   newOutput = replaceTagWithObject(newOutput, '<i>', '</i>', 'italic-text');
   newOutput = replaceTagWithObject(newOutput, '<s>', '</s>', 'spoiler-text');
   newOutput = replaceTagWithObject(newOutput, '<b><u>', '</u></b>', 'bold-underline-text');

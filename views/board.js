@@ -7,9 +7,7 @@ import {
   FlatList,
   RefreshControl,
   Pressable,
-  Image,
 } from "react-native";
-import * as Linking from 'expo-linking';
 import { IconButton } from 'react-native-paper';
 import axios from "axios";
 
@@ -17,7 +15,6 @@ import ListItem from '../components/listItem';
 import ImageViewer from "../components/imageViewer";
 import { Button } from "../components/button";
 
-import { replaceText, splitText } from '../assets/helper';
 import theme from '../assets/style';
 
 const Board = ({ route, navigation }) => {
@@ -140,8 +137,8 @@ const Board = ({ route, navigation }) => {
                   board={board}
                   index={index}
                   item={item}
-                  onPress={() => navigation.navigate('Thread', {board: board, thread: item})}
                   onImagePress={() => setImageViewerVisible(true)}
+                  onPress={() => navigation.navigate('Thread', {board: board, thread: item})}
                 />
                 { index != shownPages.length - 1 ? null :
                   <View style={{margin: 10, marginBottom: 15, alignItems: 'center'}}>

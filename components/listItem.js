@@ -14,9 +14,9 @@ import theme from '../assets/style';
 
 global.theme = 'dark'; // this somehow is the first component to load ?
 
-export default ListItem = ({ board, isOP = false, item, onPress, onImagePress}) => {
+export default ListItem = ({ board, isLast= false, isOP = false, item, navigation, onImagePress, onPress, onQuotePress, onReplyPress, replies}) => {
   return (
-    <View style={[styles.item, isOP ? styles.op : null, item?.filename ? {paddingLeft: 8} : {paddingLeft: 12}]}>
+    <View style={[styles.item, isOP ? styles.op : null, item?.filename ? {paddingLeft: 8} : {paddingLeft: 12}, isLast ? {marginBottom:10} : null]}>
       <Pressable
         style={{flexDirection: 'row', flex: 1, flexGrow: 1}}
         android_ripple={ onPress ? { 
@@ -33,6 +33,7 @@ export default ListItem = ({ board, isOP = false, item, onPress, onImagePress}) 
                 borderless: true,
               }}
               onPress={onImagePress}
+              hitSlop={6}
             >
               <Image style={isOP ? styles.op.icon : styles.icon} source={{ uri: 'https://i.4cdn.org/' + board.board + '/' + item.tim + 's.jpg' }}/>
             </Pressable>
@@ -45,14 +46,22 @@ export default ListItem = ({ board, isOP = false, item, onPress, onImagePress}) 
             { splitText(onPress ? replaceText(item?.com, 250) : replaceText(item?.com)).map((obj, index) => ( // console.log(obj),
                 obj.type == 'text' ? <Text style={styles.meta} key={index}>{ obj.text }</Text> :
                 obj.type == 'link' ? 
-                  <Pressable key={index} onPress={() => 
-                    WebBrowser.openBrowserAsync(obj.href, 
-                      {
-                        secondaryToolbarColor: '#000000',
-                        toolbarColor: theme[global.theme].headerColor,
-                      }
-                    )}
-                  >
+                  <Pressable hitSlop={6} key={index} onPress={() => {
+                    if (obj.href.substr(0,1) == '/') {
+                      let [board, _, thread_reply] = obj.href.split('/');
+                      let [thread, reply] = thread_reply.split('#p');
+                    } else if (obj.href.substr(0,1) == '#') {
+                      let post = obj.href.substr(2).split('"')[0];
+                      pressedQuote = post;
+                      onQuotePress(post);
+                    } else
+                      WebBrowser.openBrowserAsync(obj.href, 
+                        {
+                          secondaryToolbarColor: '#000000',
+                          toolbarColor: theme[global.theme].headerColor,
+                        }
+                      )
+                  }}>
                     <Text style={styles.link}>{ obj.text }</Text>
                   </Pressable> :
                 obj.type == 'custom-text' ? <Text key={index} style={[styles.meta, obj.style]}>{ obj.text }</Text> :
@@ -62,14 +71,21 @@ export default ListItem = ({ board, isOP = false, item, onPress, onImagePress}) 
                 obj.type == 'underline-text' ? <Text key={index} style={[styles.meta, {textDecorationLine: 'underline'}]}>{ obj.text }</Text> :
                 obj.type == 'bold-underline-text' ? <Text key={index} style={[styles.meta, {textDecorationLine: 'underline', fontWeight: 'bold'}]}>{ obj.text }</Text> :
                 obj.type == 'spoiler-text' ? <Spoiler key={index} text={obj.text} /> :
+                obj.type == 'dead-text' ? <Text key={index} style={styles.deadlink}>{ obj.text }</Text> :
                 null
             )) }
           </View> : null }
-          <View style={{flexDirection: 'row', marginTop: 3}}>
-            { item?.replies ? <Text style={styles.detail}>{ item?.replies } replies</Text> : null }
-            { item?.replies && item?.images ? <Text style={styles.detail}>, </Text> : null }
-            { item?.images ? <Text style={styles.detail}>{ item?.images } {item?.images == 1 ? "image" : "images"}</Text> : null }
-          </View>
+          { onPress ? 
+            <View style={styles.detailContainer}>
+              { item?.replies ? <Text style={styles.detail}>{ item?.replies } { item?.replies == 1 ? "reply" : "replies"}</Text> : null }
+              { item?.replies && item?.images ? <Text style={styles.detail}>, </Text> : null }
+              { item?.images ? <Text style={styles.detail}>{ item?.images } {item?.images == 1 ? "image" : "images"}</Text> : null }
+            </View>
+          :
+            <Pressable style={styles.detailContainer} onPress={onReplyPress} hitSlop={6}>
+              { replies > 0 ? <Text style={styles.detail}>{ replies } { replies == 1 ? "reply" : "replies"}</Text> : null }
+            </Pressable>
+          }
         </View>
       </Pressable>
     </View>
@@ -82,7 +98,6 @@ const styles = StyleSheet.create({
     padding: 6,
     paddingRight: 12,
     margin: 10,
-    marginTop: 10,
     marginBottom: 5,
     backgroundColor: theme[global.theme].inactiveAccentColor,
     borderRadius: 6,
@@ -130,8 +145,17 @@ const styles = StyleSheet.create({
     color: theme[global.theme].linkTextColor,
     textDecorationLine: 'underline',
   },
+  deadlink: {
+    fontSize: 14,
+    color: theme[global.theme].linkTextColor,
+    textDecorationLine: 'line-through',
+  },
   detail: {
     fontSize: 14,
     color: theme[global.theme].secondaryTextColor
   },
+  detailContainer: {
+    flexDirection: 'row', 
+    marginTop: 3,
+  }
 });

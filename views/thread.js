@@ -14,8 +14,9 @@ import { IconButton } from 'react-native-paper';
 import axios from "axios";
 
 import ListItem from '../components/listItem';
+import ImageViewer from "../components/imageViewer";
+import ReplyViewer from "../components/replyViewer";
 
-import { replaceText, splitText } from '../assets/helper';
 import theme from '../assets/style';
 
 const Thread = ({ route, navigation }) => {
@@ -69,12 +70,28 @@ const Thread = ({ route, navigation }) => {
     );
   };
   
+  const [post, setPost] = useState(0);
   const [posts, setPosts] = useState([]);
+  const [repliesTo, setRepliesTo] = useState(0);
+  const [replyViewerVisible, setReplyViewerVisible] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [refreshStamp, setRefreshStamp] = useState(null);
+  const [imageViewerVisible, setImageViewerVisible] = useState(false);
 
   return (
     <View style={styles.container}>
+      <ImageViewer
+        isVisible={imageViewerVisible}
+        onRequestClose={() => setImageViewerVisible(false)}
+      />
+      <ReplyViewer
+        board={board}
+        isVisible={replyViewerVisible}
+        onRequestClose={() => setReplyViewerVisible(false)}
+        posts={posts}
+        post={post}
+        repliesTo={repliesTo}
+      />
       <FlatList
         data={posts}
         refreshControl={
@@ -90,8 +107,14 @@ const Thread = ({ route, navigation }) => {
           <ListItem
             board={board}
             index={index}
+            isLast={posts.length - 1 == index}
             isOP={index == 0}
             item={item}
+            navigation={navigation}
+            onImagePress={() => setImageViewerVisible(true)}
+            onQuotePress={post => {setRepliesTo(0); setPost(post); setReplyViewerVisible(true)}}
+            onReplyPress={() => {setPost(0); setRepliesTo(item.no); setReplyViewerVisible(true)}}
+            replies={posts.filter(x => x?.com?.includes('#p' + item.no)).length}
           />
         </View>
         }
