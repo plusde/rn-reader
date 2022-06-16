@@ -291,6 +291,7 @@ dependencies {
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
+    // idk what this does lol
     def isGifEnabled = (findProperty('expo.gif.enabled') ?: "") == "true";
     def isWebpEnabled = (findProperty('expo.webp.enabled') ?: "") == "true";
     def isWebpAnimatedEnabled = (findProperty('expo.webp.animated') ?: "") == "true";
@@ -302,19 +303,19 @@ dependencies {
         implementation "com.facebook.fresco:imagepipeline-okhttp3:${frescoVersion}"
     }
 
-    if (isGifEnabled) {
+    // if (isGifEnabled) {
         // For animated gif support
         implementation "com.facebook.fresco:animated-gif:${frescoVersion}"
-    }
+    // }
 
-    if (isWebpEnabled) {
+    // if (isWebpEnabled) {
         // For webp support
         implementation "com.facebook.fresco:webpsupport:${frescoVersion}"
-        if (isWebpAnimatedEnabled) {
+        // if (isWebpAnimatedEnabled) {
             // Animated webp support
             implementation "com.facebook.fresco:animated-webp:${frescoVersion}"
-        }
-    }
+    //     }
+    // }
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {

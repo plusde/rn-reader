@@ -11,9 +11,10 @@ Run `npm install && expo start` and scan the QR code to try out the app.
 * Browsing the thread list of the selected board
 * Browsing the posts in the selected thread
 * Displaying external links in a custom chrome tab
+* Thread image browser
 
 ### Planned features:
-* Thread image browser
+* Webm and video support in image browser
 * Bookmarking threads
 * Settings and about page
 * Handling 4chan links
@@ -23,5 +24,5 @@ A download link will be available once basic functionality requirements are met.
 - [X] Browsing boards
 - [X] Browsing threads
 - [X] Navigating threads by replies
-- [ ] Viewing images
+- [X] Viewing images
 - [ ] Handling 4chan links (maybe)

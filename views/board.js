@@ -77,7 +77,7 @@ const Board = ({ route, navigation }) => {
     );
   };
 
-  const getPosts = () => {
+  const getPosts = (thread) => {
     axios.get("https://a.4cdn.org/" + board.board + "/thread/" + thread.no + ".json", {
         headers: {
           'If-Modified-Since': imageRefreshStamp?.toLocaleDateString('en_US', {timeZone: 'UTC'})
@@ -116,6 +116,8 @@ const Board = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <ImageViewer
+        board={board}
+        images={posts.filter(x => x?.filename)}
         isVisible={imageViewerVisible}
         onRequestClose={() => setImageViewerVisible(false)}
       />
@@ -138,7 +140,7 @@ const Board = ({ route, navigation }) => {
                   board={board}
                   index={index}
                   item={item}
-                  onImagePress={() => setImageViewerVisible(true)}
+                  onImagePress={() => {getPosts(item); setImageViewerVisible(true)}}
                   onPress={() => navigation.navigate('Thread', {board: board, thread: item})}
                 />
                 { index != shownPages.length - 1 ? null :

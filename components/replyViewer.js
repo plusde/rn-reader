@@ -4,7 +4,6 @@ import {
   Pressable,
   Modal,
   FlatList,
-  Text,
 } from 'react-native';
 
 import ListItem from '../components/listItem';

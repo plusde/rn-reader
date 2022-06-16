@@ -78,13 +78,17 @@ const Thread = ({ route, navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
   const [refreshStamp, setRefreshStamp] = useState(null);
   const [imageViewerVisible, setImageViewerVisible] = useState(false);
+  const [viewing, setViewing] = useState(false);
 
   return (
     <View style={styles.container}>
-      <ImageViewer
-        isVisible={imageViewerVisible}
-        onRequestClose={() => setImageViewerVisible(false)}
-      />
+    <ImageViewer
+      board={board}
+      images={posts.filter(x => x?.filename)}
+      initialScrollIndex={posts.filter(x => x?.filename).indexOf(viewing)}
+      isVisible={imageViewerVisible}
+      onRequestClose={() => setImageViewerVisible(false)}
+    />
       <ReplyViewer
         board={board}
         isVisible={replyViewerVisible}
@@ -112,7 +116,7 @@ const Thread = ({ route, navigation }) => {
             isOP={index == 0}
             item={item}
             navigation={navigation}
-            onImagePress={() => setImageViewerVisible(true)}
+            onImagePress={() => {setViewing(item); setImageViewerVisible(true)}}
             onQuotePress={post => {setRepliesTo(0); setPost(post); setReplyViewerVisible(true)}}
             onReplyPress={() => {setPost(0); setRepliesTo(item.no); setReplyViewerVisible(true)}}
             replies={posts.filter(x => x?.com?.includes('#p' + item.no)).length}
